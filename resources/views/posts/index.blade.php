@@ -32,14 +32,16 @@
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <a href="{{ url('posts/show?id=' . $post->postID) }}" target="_blank">
                                                 <div class="text-sm text-gray-900">{{$post->title}}</div>
-                                                <div class="text-sm text-gray-500">{{$post->body}}</div>
+                                                <div class="text-sm text-gray-500">{{substr($post->body, 0, 60)}}</div>
                                             </a>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            Mar 23 2021
+                                            {{$post->date}}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                            <a href="{{url('posts/' . $post->postID . '/edit')}}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                            &nbsp;
+                                            <a href="{{url('delete/' . $post->postID)}}" style="color: red" class="text-indigo-600 hover:text-indigo-900">Delete</a>
                                         </td>
                                     </tr>
                                 @endforeach

@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [\App\Http\Controllers\homepage::class,'index']);
+Route::get('/viewPost/{id}', [\App\Http\Controllers\homepage::class,'viewPost']);
+Route::get('/delete/{id}', [\App\Http\Controllers\homepage::class,'delete']);
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');

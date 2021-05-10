@@ -13,13 +13,14 @@
                         <div class="px-4 sm:px-0">
                             <h3 class="text-lg font-medium leading-6 text-gray-900">Write a Post</h3>
                             <p class="mt-1 text-sm text-gray-600">
-                                Feel free to write a post.
+                                Feel free to edit a post.
                             </p>
                         </div>
                     </div>
                     <div class="mt-5 md:mt-0 md:col-span-2">
-                        <form action="{{url('posts')}}" method="POST">
+                        <form action="{{url('posts/' . $postID)}}" method="POST">
                             @csrf
+                            <input name="_method" type="hidden" value="PUT">
                             <div class="shadow sm:rounded-md sm:overflow-hidden">
                                 <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
                                     <div class="grid grid-cols-3 gap-6">
@@ -28,7 +29,7 @@
                                                 Title
                                             </label>
                                             <div class="mt-1 flex rounded-md shadow-sm">
-                                                <input type="text" name="title" id="company_website" class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300" placeholder="My Title">
+                                                <input type="text" name="title" id="company_website" value="{{$title}}" class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300" placeholder="My Title">
                                             </div>
                                         </div>
                                     </div>
@@ -38,7 +39,7 @@
                                             Body
                                         </label>
                                         <div class="mt-1">
-                                            <textarea id="about" name="body" rows="3" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md" placeholder="My post"></textarea>
+                                            <textarea id="about" name="body" rows="3" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md" placeholder="My post">{!! $body !!}</textarea>
                                         </div>
                                     </div>
 

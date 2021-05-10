@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Posts;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class PostsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index()
     {
@@ -22,41 +23,43 @@ class PostsController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function create()
     {
         return view('posts.create');
     }
 
+
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function store(Request $request)
     {
-        //
+        $model = new Posts();
+        $model->createPost($request->input('title'), $request->input('body'));
+        return Redirect::to('/posts');
     }
 
     /**
      * Display the specified resource.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function show(Request $request)
     {
         $postID = (int)$request->input('id');
         $model = new Posts();
-        $page = $model->getPostByID($postID);
-        if ($page == null) {
+        $post = $model->getPostByID($postID);
+        if ($post == null) {
             abort(404);
         }
-        $title = $page->title;
-        $body = $page->body;
-        return view('posts.show', compact('title','body'));
+        $post->body = str_replace("\n", '<br>', $post->body);
+        return view('posts.show', compact('post'));
 
     }
 
@@ -68,7 +71,15 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $postID = (int)$id;
+        $model = new Posts();
+        $page = $model->getPostByID($postID);
+        if ($page == null) {
+            abort(404);
+        }
+        $title = $page->title;
+        $body = $page->body;
+        return view('posts.edit', compact('title','body', 'postID'));
     }
 
     /**
@@ -80,7 +91,10 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $postID = (int)$id;
+        $model = new Posts();
+        $model->updatePost($postID, $request->input('title'), $request->input('body'));
+        return Redirect::to('/posts');
     }
 
     /**
@@ -91,6 +105,6 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        echo $id;
     }
 }

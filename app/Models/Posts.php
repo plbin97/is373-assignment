@@ -23,6 +23,27 @@ class Posts extends Model
             ->get();
     }
 
+    public function createPost($title, $body) {
+        DB::table('posts')
+            ->insert([
+                'postID' => rand(0, 100000),
+                'title' => $title,
+                'body' => $body,
+                'published' => true,
+                'date' => \Carbon\Carbon::now()
+            ]);
+    }
+    public function updatePost($postID, $title, $body) {
+        DB::table('posts')
+            ->where('postID',$postID)
+            ->update([
+                'title' => $title,
+                'body' => $body,
+                'published' => true,
+                'date' => \Carbon\Carbon::now()
+            ]);
+    }
+
     public function getPostByID($id) {
         $posts = DB::table('posts')
             ->where('postID', $id)
@@ -31,5 +52,11 @@ class Posts extends Model
             return null;
         }
         return $posts[0];
+    }
+
+    public function deleteByID($id) {
+        DB::table('posts')
+            ->where('postID',$id)
+            ->delete();
     }
 }
